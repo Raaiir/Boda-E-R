@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visor con Música</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      position: relative;
+      overflow: auto;
+    }
+    /* Estilo del iframe del PDF */
+    iframe {
+      width: 100%;
+      height: 100vh;
+      border: none;
+      position: relative;
+    }
+    /* Estilo del botón visible para Safari */
+    #playButton {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 60px;
+      background-color: rgba(255, 255, 255, 0.5); /* Fondo visible */
+      border-radius: 10px;
+      text-align: center;
+      font-size: 18px;
+      color: #000;
+      cursor: pointer;
+      z-index: 100;
+    }
+    #playButton:hover {
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+  </style>
+</head>
+<body>
+  <!-- PDF incrustado -->
+  <iframe 
+    src="https://docs.google.com/gview?url=https://drive.google.com/uc?id=1-6Wbqk3m8hzLZ2TnC84vLJRBs3lsk8hH&export=download&embedded=true">
+  </iframe>
+
+  <!-- Reproductor de YouTube (canción) -->
+  <iframe width="100%" height="315" src="https://www.youtube.com/embed/3wxyN3z9PL4?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+  <!-- Botón visible para reproducir música -->
+  <div id="playButton" onclick="playAudio()">Haz clic para escuchar música</div>
+
+  <script>
+    // Función para reproducir el audio (cuando se hace clic)
+    function playAudio() {
+      var iframe = document.querySelector('iframe');
+      var src = iframe.src;
+      if (src.includes("autoplay=1")) {
+        iframe.src = src; // Para asegurar que se reproduce correctamente.
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
