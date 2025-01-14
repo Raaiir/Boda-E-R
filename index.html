@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visor con Música y Conteo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Frunchy&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    #pdfContainer {
+      width: 100%;
+      height: 100vh;
+      overflow: auto;
+      position: relative;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    #playButton {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 180px;
+      height: 50px;
+      background-color: rgba(120, 127, 92, 0.8);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: 2px solid white;
+      border-radius: 15px;
+      text-align: center;
+      line-height: 50px;
+      cursor: pointer;
+      z-index: 100;
+    }
+    #playButton:active {
+      background-color: rgba(120, 127, 92, 1);
+    }
+    #countdown {
+      display: none;
+      font-family: 'Frunchy', cursive;
+      color: white;
+      text-align: center;
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 200;
+      background-color: rgba(120, 127, 92, 0.7); /* Fondo verde translúcido */
+      padding: 10px;
+    }
+    #countdown .time {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+    #countdown .unit {
+      text-align: center;
+      font-size: 24px;
+    }
+    #countdown .unit span {
+      display: block;
+      font-size: 36px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <audio id="audio" loop playsinline>
+    <source src="https://raw.githubusercontent.com/Raaiir/Boda-E-R/refs/heads/main/Nothing%20gonna%20stop%20us%20now.mp3" type="audio/mp3">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+
+  <div id="pdfContainer">
+    <iframe id="pdfIframe" 
+      src="https://docs.google.com/gview?url=https://drive.google.com/uc?id=1-6Wbqk3m8hzLZ2TnC84vLJRBs3lsk8hH&export=download&embedded=true">
+    </iframe>
+    <div id="playButton" tabindex="0">Reproducir Música</div>
+    <div id="countdown">
+      <div class="time">
+        <div class="unit">
+          <span id="days">0</span>
+          días
+        </div>
+        <div class="unit">
+          <span id="hours">0</span>
+          horas
+        </div>
+        <div class="unit">
+          <span id="minutes">0</span>
+          minutos
+        </div>
+        <div class="unit">
+          <span id="seconds">0</span>
+          segundos
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const playButton = document.getElementById('playButton');
+      const audio = document.getElementById('audio');
+      const countdown = document.getElementById('countdown');
+
+      const daysElem = document.getElementById('days');
+      const hoursElem = document.getElementById('hours');
+      const minutesElem = document.getElementById('minutes');
+      const secondsElem = document.getElementById('seconds');
+
+      playButton.addEventListener('click', function () {
+        audio.load();
+        const playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            playButton.style.display = 'none';
+            countdown.style.display = 'block'; // Hacer visible el contador
+
+            startCountdown('2025-03-22T00:00:00');
+          }).catch(error => {
+            console.error('Error al intentar reproducir el audio:', error);
+            alert('Por favor, permite la reproducción manual en tu navegador y luego vuelve a intentarlo.');
+            audio.controls = true;
+          });
+        }
+      });
+
+      // Actualizar el contador con la fecha final
+      function startCountdown(targetDate) {
+        const target = new Date(targetDate).getTime();
+
+        const interval = setInterval(() => {
+          const now = new Date().getTime();
+          const distance = target - now;
+
+          if (distance <= 0) {
+            clearInterval(interval);
+            daysElem.textContent = '0';
+            hoursElem.textContent = '0';
+            minutesElem.textContent = '0';
+            secondsElem.textContent = '0';
+            return;
+          }
+
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          daysElem.textContent = days;
+          hoursElem.textContent = hours;
+          minutesElem.textContent = minutes;
+          secondsElem.textContent = seconds;
+        }, 1000);
+      }
+    });
+  </script>
+</body>
+</html>
+
