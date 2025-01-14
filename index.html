@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visor con Música</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      overflow: auto;
+      position: relative;
+    }
+    iframe {
+      width: 100%;
+      height: 100vh;
+      border: none;
+      position: relative;
+    }
+    /* Botón estilizado */
+    #playButton {
+      position: fixed; /* Fija el botón en el centro */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 50px;
+      background-color: transparent;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: 2px solid white; /* Borde blanco visible */
+      border-radius: 15px; /* Bordes curvos */
+      text-align: center;
+      line-height: 50px; /* Centra el texto verticalmente */
+      cursor: pointer;
+      z-index: 1000; /* Asegura que esté sobre el iframe */
+      pointer-events: auto; /* Asegura que el botón reciba eventos */
+    }
+    #playButton:active {
+      background-color: rgba(255, 255, 255, 0.2); /* Cambia el fondo al presionar */
+    }
+    audio {
+      display: none; /* Oculta el reproductor de audio */
+    }
+    /* Fondo del iframe para permitir clics */
+    #iframeWrapper {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Reproductor de audio -->
+  <audio id="audio" loop>
+    <source src="https://www.dropbox.com/scl/fi/hprvrnlh2w6af999wxmnh/Nothing-gonna-stop-us-now.mp3?rlkey=wgkatjgdnau9sgvycwvf0azfe&st=ojw1i630&dl=1" type="audio/mp3">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+
+  <!-- Contenedor para el PDF -->
+  <div id="iframeWrapper">
+    <iframe 
+      src="https://docs.google.com/gview?url=https://drive.google.com/uc?id=1-6Wbqk3m8hzLZ2TnC84vLJRBs3lsk8hH&export=download&embedded=true">
+    </iframe>
+  </div>
+
+  <!-- Botón visible para activar el audio -->
+  <div id="playButton" onclick="playAudio()">Abrir invitación</div>
+
+  <script>
+    function playAudio() {
+      const audio = document.getElementById('audio');
+      const playButton = document.getElementById('playButton');
+
+      // Intenta reproducir el audio
+      audio.play().then(() => {
+        // Oculta el botón después de la reproducción
+        playButton.style.display = 'none';
+      }).catch((error) => {
+        alert('Por favor, haz clic nuevamente para activar el audio.');
+        console.error('Error:', error);
+      });
+    }
+  </script>
+</body>
+</html>
+
+
+
