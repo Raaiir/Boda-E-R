@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visor con Música</title>
+  <link rel="manifest" href="manifest.json"> <!-- Enlace al archivo de manifiesto -->
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+    iframe {
+      width: 100%;
+      height: 100vh;
+      border: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+    #playButton {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 180px;
+      height: 50px;
+      background-color: rgba(120, 127, 92, 0.9);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: 2px solid white;
+      border-radius: 15px;
+      text-align: center;
+      line-height: 50px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    #playButton:active {
+      background-color: rgba(120, 127, 92, 1);
+    }
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <audio id="audio" loop playsinline>
+    <source src="https://www.dropbox.com/scl/fi/hprvrnlh2w6af999wxmnh/Nothing-gonna-stop-us-now.mp3?rlkey=wgkatjgdnau9sgvycwvf0azfe&st=ojw1i630&dl=1" type="audio/mp3">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+
+  <div id="playButton" tabindex="0">Reproducir Música</div>
+
+  <iframe 
+    src="https://docs.google.com/gview?url=https://drive.google.com/uc?id=1-6Wbqk3m8hzLZ2TnC84vLJRBs3lsk8hH&export=download&embedded=true">
+  </iframe>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').then(registration => {
+          console.log('Service Worker registrado con éxito:', registration);
+        }).catch(error => {
+          console.log('Error al registrar el Service Worker:', error);
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const playButton = document.getElementById('playButton');
+      playButton.focus();
+
+      playButton.addEventListener('click', function () {
+        const audio = document.getElementById('audio');
+        audio.load();
+        const playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            playButton.style.display = 'none';
+          }).catch(error => {
+            console.error('Error al intentar reproducir el audio:', error);
+            alert('Por favor, permite la reproducción manual en tu navegador y luego vuelve a intentarlo.');
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
+
