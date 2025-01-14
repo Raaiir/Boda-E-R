@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visor con Música</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      position: relative;
+      overflow: auto;
+    }
+    iframe {
+      width: 100%;
+      height: 100vh;
+      border: none;
+      position: relative;
+    }
+    #playButton {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0);
+      border: none;
+      cursor: pointer;
+      z-index: 100;
+    }
+    audio {
+      display: none; /* Ocultar el reproductor de audio */
+    }
+  </style>
+</head>
+<body>
+  <!-- Reproductor de audio -->
+  <audio id="audio" loop>
+    <source src="https://www.dropbox.com/scl/fi/hprvrnlh2w6af999wxmnh/Nothing-gonna-stop-us-now.mp3?rlkey=wgkatjgdnau9sgvycwvf0azfe&st=ojw1i630&dl=1" type="audio/mp3">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+
+  <!-- PDF incrustado -->
+  <iframe 
+    src="https://docs.google.com/gview?url=https://drive.google.com/uc?id=1-6Wbqk3m8hzLZ2TnC84vLJRBs3lsk8hH&export=download&embedded=true">
+  </iframe>
+
+  <!-- Botón transparente para reproducir música -->
+  <div id="playButton" onclick="playAudio()"></div>
+
+  <script>
+    function playAudio() {
+      var audio = document.getElementById('audio');
+      audio.play().then(() => {
+        document.getElementById('playButton').style.display = 'none';
+      }).catch((error) => {
+        alert('Haz clic nuevamente para activar el audio.');
+        console.error('Error:', error);
+      });
+    }
+  </script>
+</body>
+</html>
+
+
